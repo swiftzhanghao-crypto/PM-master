@@ -162,7 +162,7 @@ const QUESTIONS: Question[] = [
   }
 ];
 
-const LEVEL_NAMES = {
+const LEVEL_NAMES: Record<number, string> = {
   1: 'Lvl 1 - 产品助理 (APM)',
   2: 'Lvl 2 - 产品经理 (PM)',
   3: 'Lvl 3 - 高级产品经理 (Senior PM)',
@@ -412,6 +412,7 @@ export const Exam: React.FC = () => {
             </div>
             )}
         </div>
+    </div>
     </div>
   );
 };
