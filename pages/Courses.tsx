@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { PlayCircle, Clock, Award, CheckCircle2, Lock, MessageCircle, Star, X, Check, Copy, ChevronRight, Crown, ArrowUpRight, Medal, BookOpen, Video, PenTool, FileQuestion, ArrowLeft, Layout, Sparkles, Target } from 'lucide-react';
+import { PlayCircle, Clock, Award, CheckCircle2, Lock, MessageCircle, Star, X, Check, Copy, ChevronRight, Crown, ArrowUpRight, Medal, BookOpen, Video, PenTool, FileQuestion, ArrowLeft, Layout, Sparkles, Target, ArrowRight } from 'lucide-react';
 import { CourseCheckoutModal } from '../components/CourseCheckoutModal';
 import { SkillCategory, Certificate } from '../types';
 
@@ -117,7 +117,26 @@ const COURSE_DATA: CourseLevel[] = [
             }
         }
       },
-      { id: 'c103', title: '流程图绘制：泳道图与状态机', duration: '2h', lessons: 6, completed: 2, linkTo: SkillCategory.PROTOTYPING },
+      { 
+        id: 'c103', title: '流程图绘制：泳道图与状态机', duration: '2h', lessons: 6, completed: 2, linkTo: SkillCategory.PROTOTYPING,
+        details: {
+            objectives: ['掌握业务流程图（Flowchart）的绘制规范', '理解泳道图（Swimlane）在多角色协作中的作用', '学会使用状态机图描述复杂状态流转'],
+            theory: {
+                summary: '流程图是产品逻辑的骨架。一张清晰的流程图胜过千言万语的需求描述。',
+                keyPoints: ['流程图符号规范：开始/结束、操作、判断、文档', '泳道图：明确“谁”在“什么时候”做了“什么”', 'MECE 原则：流程分支不重不漏'],
+                content: '业务流程图绘制三部曲：\n1. **梳理主干**：先画出 Happy Path（最顺利的路径）。\n2. **补充枝节**：在每个判断节点（菱形）增加“否”的分支（异常流程）。\n3. **明确角色**：使用泳道区分用户、前端、后端、第三方支付等角色。'
+            },
+            practice: {
+                title: '绘制下单流程',
+                description: '前往原型设计模块，查看“业务流程图”指南，并尝试手绘一个“电商下单-支付-发货”的泳道图。',
+                actionLabel: '查看绘制指南'
+            },
+            homework: {
+                title: '优化现有流程',
+                description: '找出一个你觉得体验糟糕的 App 功能，画出它的现有流程图，并画出优化后的流程图。'
+            }
+        }
+      },
       { 
         id: 'c104', title: 'PRD 撰写：从用户故事到异常逻辑', duration: '4h', lessons: 12, completed: 0, linkTo: SkillCategory.REQUIREMENTS,
         details: {
@@ -242,7 +261,6 @@ const StarBadge = () => (
               <feMergeNode in="SourceGraphic"/>
           </feMerge>
       </filter>
-      {/* Golden Star */}
       <path 
         d="M100 50 L115 85 H155 L125 110 L135 150 L100 130 L65 150 L75 110 L45 85 H85 Z" 
         fill="url(#gold-gradient)" 
@@ -269,7 +287,6 @@ const CrownBadge = () => (
               <feMergeNode in="SourceGraphic"/>
           </feMerge>
       </filter>
-      {/* Crown Shape */}
       <path 
         d="M60 140 L60 80 L85 110 L100 50 L115 110 L140 80 L140 140 H60 Z" 
         fill="url(#crown-gradient)" 
@@ -298,9 +315,7 @@ const Level1Graphic = ({ isLocked, hasCertificate }: { isLocked: boolean; hasCer
         <stop offset="100%" style={{ stopColor: hasCertificate ? '#2563eb' : '#1d4ed8', stopOpacity: 0.2 }} />
       </linearGradient>
     </defs>
-    
     <g className="origin-center" style={{ transformBox: 'fill-box' }}>
-        {/* Dynamic Animation: Sway on hover if unlocked & no cert */}
         <path 
         d="M100 30 L170 150 H30 Z" 
         fill="url(#l1g)" 
@@ -308,7 +323,6 @@ const Level1Graphic = ({ isLocked, hasCertificate }: { isLocked: boolean; hasCer
         transform={hasCertificate ? "scale(0.9) translate(10 10)" : "rotate(0 100 100)"}
         style={{ transformOrigin: '100px 100px' }}
         />
-        
         <path 
         d="M100 50 L150 140 H50 Z" 
         fill="none"
@@ -318,8 +332,6 @@ const Level1Graphic = ({ isLocked, hasCertificate }: { isLocked: boolean; hasCer
         className={`transition-all duration-1000 ${!isLocked ? 'opacity-100' : 'opacity-0'} ${!isLocked && !hasCertificate ? 'animate-sway-hover' : ''}`}
         style={{ transformOrigin: '100px 100px', animationDelay: '0.1s' }}
         />
-
-        {/* Certificate Reward: Star */}
         {hasCertificate && <StarBadge />}
     </g>
   </svg>
@@ -333,28 +345,11 @@ const Level2Graphic = ({ isLocked, hasCertificate }: { isLocked: boolean; hasCer
         <stop offset="100%" style={{ stopColor: '#9333ea', stopOpacity: 0.2 }} />
       </linearGradient>
     </defs>
-    
     <g className="origin-center" style={{ transformBox: 'fill-box' }}>
-        {/* Dynamic Animation: Sway on hover */}
-        <g 
-            className={`${!isLocked && !hasCertificate ? 'animate-sway-hover' : ''}`}
-            style={{ transformOrigin: '100px 100px' }}
-        >
-            <rect 
-            x="50" y="50" width="100" height="100" rx="20"
-            fill="url(#l2g)"
-            className="drop-shadow-xl"
-            />
-            <rect 
-            x="65" y="65" width="70" height="70" rx="15"
-            fill="none"
-            stroke="#d8b4fe"
-            strokeWidth="2"
-            strokeOpacity="0.6"
-            />
+        <g className={`${!isLocked && !hasCertificate ? 'animate-sway-hover' : ''}`} style={{ transformOrigin: '100px 100px' }}>
+            <rect x="50" y="50" width="100" height="100" rx="20" fill="url(#l2g)" className="drop-shadow-xl" />
+            <rect x="65" y="65" width="70" height="70" rx="15" fill="none" stroke="#d8b4fe" strokeWidth="2" strokeOpacity="0.6" />
         </g>
-        
-        {/* Certificate Reward: Star */}
         {hasCertificate && <StarBadge />}
     </g>
   </svg>
@@ -368,28 +363,11 @@ const Level3Graphic = ({ isLocked, hasCertificate }: { isLocked: boolean; hasCer
         <stop offset="100%" style={{ stopColor: '#c2410c', stopOpacity: 0.2 }} />
       </linearGradient>
     </defs>
-    
     <g className="origin-center" style={{ transformBox: 'fill-box' }}>
-        {/* Dynamic Animation: Sway on hover */}
-        <g
-            className={`${!isLocked && !hasCertificate ? 'animate-sway-hover' : ''}`}
-            style={{ transformOrigin: '100px 100px' }}
-        >
-            <path 
-            d="M100 25 L165 62.5 V137.5 L100 175 L35 137.5 V62.5 Z" 
-            fill="url(#l3g)" 
-            className="drop-shadow-xl"
-            />
-            <path 
-            d="M100 45 L145 72 V128 L100 155 L55 128 V72 Z" 
-            fill="none"
-            stroke="#fed7aa"
-            strokeWidth="2"
-            strokeOpacity="0.6"
-            />
+        <g className={`${!isLocked && !hasCertificate ? 'animate-sway-hover' : ''}`} style={{ transformOrigin: '100px 100px' }}>
+            <path d="M100 25 L165 62.5 V137.5 L100 175 L35 137.5 V62.5 Z" fill="url(#l3g)" className="drop-shadow-xl" />
+            <path d="M100 45 L145 72 V128 L100 155 L55 128 V72 Z" fill="none" stroke="#fed7aa" strokeWidth="2" strokeOpacity="0.6" />
         </g>
-
-        {/* Certificate Reward: Star */}
         {hasCertificate && <StarBadge />}
     </g>
   </svg>
@@ -403,35 +381,12 @@ const Level4Graphic = ({ isLocked, hasCertificate }: { isLocked: boolean; hasCer
         <stop offset="100%" style={{ stopColor: '#854d0e', stopOpacity: 0.1 }} />
       </radialGradient>
     </defs>
-    
     <g className="origin-center" style={{ transformBox: 'fill-box' }}>
-        {/* Dynamic Animation: Sway on hover */}
-        <g
-             className={`${!isLocked && !hasCertificate ? 'animate-sway-hover' : ''}`}
-             style={{ transformOrigin: '100px 100px' }}
-        >
-            <circle 
-                cx="100" cy="100" r="75" 
-                stroke="#facc15" strokeWidth="1" strokeDasharray="6 6" 
-                fill="none" opacity="0.4" 
-            />
-            <circle 
-                cx="100" cy="100" r="55" 
-                stroke="#fde047" strokeWidth="2" 
-                fill="none" opacity="0.6" 
-            />
+        <g className={`${!isLocked && !hasCertificate ? 'animate-sway-hover' : ''}`} style={{ transformOrigin: '100px 100px' }}>
+            <circle cx="100" cy="100" r="75" stroke="#facc15" strokeWidth="1" strokeDasharray="6 6" fill="none" opacity="0.4" />
+            <circle cx="100" cy="100" r="55" stroke="#fde047" strokeWidth="2" fill="none" opacity="0.6" />
         </g>
-
-        {/* Core */}
-        <circle 
-            cx="100" cy="100" r="40" 
-            fill="url(#l4g)" 
-            className={`transition-all duration-1000 ${!isLocked && !hasCertificate ? 'animate-sway-hover' : ''}`}
-            style={{ animationDelay: '0.2s', transformOrigin: '100px 100px' }}
-            opacity={hasCertificate ? 0.3 : 1}
-        />
-        
-        {/* Certificate Reward: Crown */}
+        <circle cx="100" cy="100" r="40" fill="url(#l4g)" className={`transition-all duration-1000 ${!isLocked && !hasCertificate ? 'animate-sway-hover' : ''}`} style={{ animationDelay: '0.2s', transformOrigin: '100px 100px' }} opacity={hasCertificate ? 0.3 : 1} />
         {hasCertificate && <CrownBadge />}
     </g>
   </svg>
@@ -560,7 +515,7 @@ export const Courses: React.FC<CoursesProps> = ({ purchasedLevels, onPurchase, o
   const [selectedLevel, setSelectedLevel] = useState<CourseLevel | null>(null);
   const [showContactModal, setShowContactModal] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [activeCourse, setActiveCourse] = useState<Course | null>(null); // State for active detailed view
+  const [activeCourse, setActiveCourse] = useState<Course | null>(null);
 
   const handleLevelClick = (level: CourseLevel) => {
     if (purchasedLevels.includes(level.id)) return;
@@ -570,7 +525,7 @@ export const Courses: React.FC<CoursesProps> = ({ purchasedLevels, onPurchase, o
 
   const handleCourseClick = (course: Course, isLocked: boolean) => {
     if (isLocked) return;
-    setActiveCourse(course); // Set active course instead of immediate navigation
+    setActiveCourse(course);
   };
 
   const handlePurchaseSuccess = () => {
@@ -595,7 +550,6 @@ export const Courses: React.FC<CoursesProps> = ({ purchasedLevels, onPurchase, o
     return total === 0 ? 0 : completed / total;
   };
 
-  // Render Detailed View if a course is selected
   if (activeCourse) {
     return (
       <CourseDetailView 
@@ -606,7 +560,6 @@ export const Courses: React.FC<CoursesProps> = ({ purchasedLevels, onPurchase, o
     );
   }
 
-  // Render Main List View
   return (
     <div className="flex flex-col h-[calc(100vh-140px)] animate-fade-in relative w-full">
       <AnimationStyles />
@@ -617,7 +570,6 @@ export const Courses: React.FC<CoursesProps> = ({ purchasedLevels, onPurchase, o
         onSuccess={handlePurchaseSuccess}
       />
 
-      {/* Page Header */}
       <div className="flex-none mb-8 mt-4 px-2 text-center">
         <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-[#1d1d1f]">
           进阶之路
@@ -627,7 +579,6 @@ export const Courses: React.FC<CoursesProps> = ({ purchasedLevels, onPurchase, o
         </p>
       </div>
 
-      {/* Main List Container (Horizontal Scroll) */}
       <div className="
         flex-1 min-h-0 
         flex 
@@ -660,14 +611,12 @@ export const Courses: React.FC<CoursesProps> = ({ purchasedLevels, onPurchase, o
                 ${hasCertificate && !isDarkTheme ? 'ring-2 ring-blue-100' : ''}
               `}
             >
-              {/* --- Card Header --- */}
               <div className={`
                  p-6 pb-2 relative min-h-[140px] flex flex-col justify-start z-10
                  ${isDarkTheme 
                     ? 'bg-gradient-to-br from-slate-900 via-[#0d0d0d] to-black' 
                     : 'bg-gradient-to-br from-slate-50 via-white to-white'}
               `}>
-                  {/* Text Content Left */}
                   <div className="relative z-10 max-w-[70%]">
                      <span className={`text-[10px] font-bold tracking-[0.2em] uppercase mb-1 block ${
                         isDarkTheme ? 'text-slate-500' : 'text-slate-400'
@@ -689,7 +638,6 @@ export const Courses: React.FC<CoursesProps> = ({ purchasedLevels, onPurchase, o
                      )}
                   </div>
 
-                  {/* Graphic Absolute Top Right */}
                   <div className={`absolute -top-6 -right-6 w-32 h-32 md:w-40 md:h-40 pointer-events-none z-0 
                      ${hasCertificate ? 'opacity-100 scale-110' : 'opacity-90'}
                      transition-all duration-1000 ease-out`}
@@ -701,7 +649,6 @@ export const Courses: React.FC<CoursesProps> = ({ purchasedLevels, onPurchase, o
                   </div>
               </div>
 
-              {/* --- Scrollable Course List --- */}
               <div className="flex-1 overflow-y-auto px-4 py-2 custom-scrollbar relative z-10">
                 {isLocked && (
                   <div 
@@ -730,7 +677,6 @@ export const Courses: React.FC<CoursesProps> = ({ purchasedLevels, onPurchase, o
                         }
                       `}
                     >
-                      {/* Icon Status */}
                       <div className={`
                           w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-colors
                           ${isLocked 
@@ -743,7 +689,6 @@ export const Courses: React.FC<CoursesProps> = ({ purchasedLevels, onPurchase, o
                          {isLocked ? <Lock size={14} /> : (course.completed === course.lessons ? <Check size={14} /> : <PlayCircle size={14} />)}
                       </div>
                       
-                      {/* Text Info */}
                       <div className="flex-1 min-w-0">
                          <div className={`text-sm font-bold truncate ${isDarkTheme ? 'text-slate-200' : 'text-slate-700'}`}>
                              {course.title}
@@ -755,7 +700,6 @@ export const Courses: React.FC<CoursesProps> = ({ purchasedLevels, onPurchase, o
                          </div>
                       </div>
 
-                      {/* Action Icon */}
                       {!isLocked && (
                           <div className="text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity">
                               <ChevronRight size={14} />
@@ -766,7 +710,6 @@ export const Courses: React.FC<CoursesProps> = ({ purchasedLevels, onPurchase, o
                 </div>
               </div>
               
-              {/* Claim Certificate Action */}
               {!isLocked && !hasCertificate && (
                  <div className={`p-4 pt-0 ${isDarkTheme ? 'border-white/10' : 'border-slate-50'}`}>
                     <button 
@@ -783,7 +726,6 @@ export const Courses: React.FC<CoursesProps> = ({ purchasedLevels, onPurchase, o
                  </div>
               )}
               
-              {/* Already Claimed Indicator */}
               {!isLocked && hasCertificate && (
                  <div className={`p-4 pt-0 text-center`}>
                     <p className="text-xs text-slate-400 mt-2 font-medium flex items-center justify-center gap-1">
@@ -792,7 +734,6 @@ export const Courses: React.FC<CoursesProps> = ({ purchasedLevels, onPurchase, o
                  </div>
               )}
 
-              {/* Progress Bar (Bottom) */}
               {isLocked && (
                 <div className={`h-1.5 w-full ${isDarkTheme ? 'bg-white/10' : 'bg-slate-100'}`}>
                     <div 
@@ -809,7 +750,6 @@ export const Courses: React.FC<CoursesProps> = ({ purchasedLevels, onPurchase, o
           );
         })}
 
-        {/* --- Premium 1-on-1 Mentorship Card (At the end of the list) --- */}
         <div 
             className="
                 flex-shrink-0
@@ -822,12 +762,10 @@ export const Courses: React.FC<CoursesProps> = ({ purchasedLevels, onPurchase, o
                 hover:scale-[1.01]
             "
         >
-            {/* Background Effects */}
             <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] to-black z-0"></div>
             <div className="absolute top-0 right-0 w-64 h-64 bg-[#d4af37]/10 rounded-full blur-[80px] pointer-events-none"></div>
             
             <div className="relative z-10 p-8 flex flex-col h-full">
-                {/* Header */}
                 <div className="flex justify-between items-start mb-6">
                     <div>
                         <span className="text-[10px] font-bold tracking-[0.2em] uppercase mb-1 block text-[#d4af37]">
@@ -842,7 +780,6 @@ export const Courses: React.FC<CoursesProps> = ({ purchasedLevels, onPurchase, o
                     </div>
                 </div>
 
-                {/* Content */}
                 <p className="text-slate-400 text-sm leading-relaxed mb-8">
                     不再孤军奋战。资深总监级导师为您提供量身定制的职业辅导，从简历优化到模拟面试，全方位护航您的晋升之路。
                 </p>
@@ -861,7 +798,6 @@ export const Courses: React.FC<CoursesProps> = ({ purchasedLevels, onPurchase, o
                     ))}
                 </div>
 
-                {/* Footer Action */}
                 <div className="pt-6 border-t border-white/10">
                     <div className="flex justify-between items-end mb-4">
                         <div>
@@ -888,7 +824,6 @@ export const Courses: React.FC<CoursesProps> = ({ purchasedLevels, onPurchase, o
 
       </div>
 
-      {/* WeChat Contact Modal */}
       {showContactModal && (
         <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
           <div 
