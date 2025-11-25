@@ -189,7 +189,7 @@ export const DataAnalysis: React.FC = () => {
                             <span className="text-purple-400">SELECT</span> user_id, email, last_login <br/>
                             <span className="text-purple-400">FROM</span> users <br/>
                             <span className="text-purple-400">WHERE</span> status = <span className="text-green-400">'active'</span> <br/>
-                            <span className="text-purple-400">AND</span> created_at > <span className="text-green-400">'2023-01-01'</span><br/>
+                            <span className="text-purple-400">AND</span> created_at &gt; <span className="text-green-400">'2023-01-01'</span><br/>
                             <span className="text-purple-400">ORDER BY</span> created_at <span className="text-purple-400">DESC</span>;
                         </div>
                     </div>
@@ -219,7 +219,7 @@ export const DataAnalysis: React.FC = () => {
                         </div>
                         <div className="flex items-start gap-3 text-sm">
                             <code className="text-yellow-400 font-mono bg-white/5 px-1.5 rounded">HAVING</code>
-                            <span className="text-slate-400">对聚合后的结果进行筛选（如筛选订单数>10的用户）。</span>
+                            <span className="text-slate-400">对聚合后的结果进行筛选（如筛选订单数&gt;10的用户）。</span>
                         </div>
                         <div className="flex items-start gap-3 text-sm">
                             <code className="text-yellow-400 font-mono bg-white/5 px-1.5 rounded">LIKE</code>

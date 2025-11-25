@@ -4,7 +4,7 @@ import { PlayCircle, Clock, Award, CheckCircle2, Lock, MessageCircle, Star, X, C
 import { CourseCheckoutModal } from '../components/CourseCheckoutModal';
 import { SkillCategory, Certificate } from '../types';
 
-// --- Enhanced Data Structures ---
+// --- 1. Interfaces & Data Structures ---
 
 interface CourseDetail {
   objectives: string[];
@@ -44,193 +44,9 @@ interface CourseLevel {
   courses: Course[];
 }
 
-// --- Helper to generate default details if not specified ---
-const generateDefaultDetails = (course: Course): CourseDetail => ({
-  objectives: [
-    `掌握 ${course.title} 的核心概念`,
-    '理解在实际产品工作中的应用场景',
-    '能够独立完成基础案例操作'
-  ],
-  theory: {
-    summary: '本节课我们将深入探讨该主题的理论基础，结合大厂案例进行解析。',
-    keyPoints: ['核心定义与背景', '标准工作流程 (SOP)', '常见误区与避坑指南'],
-    content: `在现代产品管理中，${course.title} 是不可或缺的一环。\n\n我们需要关注用户价值与商业价值的平衡。通过系统化的方法论，我们可以减少决策的不确定性。\n\n重点在于：\n1. 明确目标用户\n2. 分析核心痛点\n3. 制定可落地的解决方案`
-  },
-  practice: {
-    title: '实战演练',
-    description: '理论结合实践。请前往对应的工作台，利用我们在课程中学到的方法论，完成一次完整的操作。',
-    actionLabel: course.linkTo ? '前往工作台实操' : '开始模拟练习'
-  },
-  homework: {
-    title: '课后思考',
-    description: '结合你负责过的或正在使用的产品，分析其在该维度的表现，并撰写一份 500 字的分析报告。'
-  }
-});
+// --- 2. Helper Components (Graphics, Badges) ---
+// CRITICAL: Defined BEFORE usage to prevent "ReferenceError: Cannot access before initialization"
 
-// --- Course Data with Specific Details ---
-const COURSE_DATA: CourseLevel[] = [
-  {
-    id: 'l1',
-    level: 'LEVEL 1',
-    title: '产品助理 (APM)',
-    description: '构建核心产品思维，掌握基础执行能力。适合0-1岁新人入门。',
-    color: 'blue',
-    price: 0,
-    courses: [
-      { 
-        id: 'c101', title: '产品经理职业全景与思维模型', duration: '45min', lessons: 3, completed: 3,
-        details: {
-            objectives: ['理解产品经理的定义与职责边界', '掌握“同理心”与“第一性原理”思维', '了解互联网产品的全生命周期'],
-            theory: {
-                summary: '产品经理 (PM) 是产品的 CEO，负责产品的生老病死。但更准确地说，PM 是资源的协调者和价值的创造者。',
-                keyPoints: ['PM 的能力模型：冰山模型', '产品生命周期：引入、成长、成熟、衰退', '核心思维：用户思维、数据思维、迭代思维'],
-                content: '在这个模块中，我们将打破你对 PM 的刻板印象。PM 不仅仅是画图和写文档的人，更是商业目标的实现者。\n\n我们将重点讨论“双钻模型 (Double Diamond)”：\n1. 发现问题 (Discover)\n2. 定义问题 (Define)\n3. 构思方案 (Develop)\n4. 交付验证 (Deliver)'
-            },
-            practice: {
-                title: '自我评估',
-                description: '使用 SWOT 分析法，分析自己转行/从事产品经理的优势与劣势。',
-                actionLabel: '查看职业地图'
-            },
-            homework: {
-                title: '拆解一款 App',
-                description: '选择你最常用的 App，用思维导图画出它的核心功能架构。'
-            }
-        }
-      }, 
-      { 
-        id: 'c102', title: '竞品分析：SWOT 与五层法实战', duration: '1.5h', lessons: 5, completed: 5, linkTo: SkillCategory.REQUIREMENTS,
-        details: {
-            objectives: ['学会选择正确的竞品（直接/间接/潜在）', '掌握用户体验要素（五层法）分析框架', '能够输出一份高质量的竞品分析报告'],
-            theory: {
-                summary: '知己知彼，百战不殆。竞品分析不是简单的截图对比，而是通过表象看本质，洞察对手的战略意图。',
-                keyPoints: ['竞品分级：核心竞品 vs 重要竞品', '分析维度：战略层、范围层、结构层、框架层、表现层', '信息收集渠道：财报、AppStore 评论、行业报告'],
-                content: '五层法分析实战：\n\n**1. 战略层**：他们的用户是谁？帮用户解决了什么问题？\n**2. 范围层**：提供了哪些功能和内容？\n**3. 结构层**：交互逻辑和信息架构是怎样的？\n**4. 框架层**：页面布局和按钮位置。\n**5. 表现层**：视觉风格和配色。\n\n切记：不要为了分析而分析，结论必须服务于我们的产品迭代。'
-            },
-            practice: {
-                title: '生成竞品分析报告',
-                description: '前往需求模块，使用 AI 辅助功能，针对“抖音 vs 快手”生成一份竞品分析草稿。',
-                actionLabel: '前往需求工作台'
-            },
-            homework: {
-                title: '竞品功能对比表',
-                description: '选取 3 个同类产品，对比其“注册登录”流程的优劣，并输出 Excel 对比表。'
-            }
-        }
-      },
-      { 
-        id: 'c103', title: '流程图绘制：泳道图与状态机', duration: '2h', lessons: 6, completed: 2, linkTo: SkillCategory.PROTOTYPING,
-        details: {
-            objectives: ['掌握业务流程图（Flowchart）的绘制规范', '理解泳道图（Swimlane）在多角色协作中的作用', '学会使用状态机图描述复杂状态流转'],
-            theory: {
-                summary: '流程图是产品逻辑的骨架。一张清晰的流程图胜过千言万语的需求描述。',
-                keyPoints: ['流程图符号规范：开始/结束、操作、判断、文档', '泳道图：明确“谁”在“什么时候”做了“什么”', 'MECE 原则：流程分支不重不漏'],
-                content: '业务流程图绘制三部曲：\n1. **梳理主干**：先画出 Happy Path（最顺利的路径）。\n2. **补充枝节**：在每个判断节点（菱形）增加“否”的分支（异常流程）。\n3. **明确角色**：使用泳道区分用户、前端、后端、第三方支付等角色。'
-            },
-            practice: {
-                title: '绘制下单流程',
-                description: '前往原型设计模块，查看“业务流程图”指南，并尝试手绘一个“电商下单-支付-发货”的泳道图。',
-                actionLabel: '查看绘制指南'
-            },
-            homework: {
-                title: '优化现有流程',
-                description: '找出一个你觉得体验糟糕的 App 功能，画出它的现有流程图，并画出优化后的流程图。'
-            }
-        }
-      },
-      { 
-        id: 'c104', title: 'PRD 撰写：从用户故事到异常逻辑', duration: '4h', lessons: 12, completed: 0, linkTo: SkillCategory.REQUIREMENTS,
-        details: {
-            objectives: ['理解标准 PRD 的文档结构', '掌握 User Story 的标准句式', '学会编写无歧义的功能验收标准 (AC)'],
-            theory: {
-                summary: 'PRD 是产品经理交付给开发和测试的“法律文书”。清晰、严谨是第一要求。',
-                keyPoints: ['PRD 核心要素：变更记录、背景、流程、功能详情、埋点', '异常流程：断网、报错、空状态', '版本管理：如何避免需求变更带来的混乱'],
-                content: '一份优秀的 PRD 应该像说明书一样好读。\n\n**User Story 模板**：\nAs a <Role>, I want to <Action>, so that <Value>.\n\n**异常逻辑检查清单**：\n- 数据加载失败怎么办？\n- 输入字符超长怎么办？\n- 权限不足时显示什么？\n- 并发操作如何处理？'
-            },
-            practice: {
-                title: '撰写我的第一个 PRD',
-                description: '前往需求模块，使用分步引导工具，完成“用户登录功能”的 PRD 撰写，重点补充异常逻辑。',
-                actionLabel: '开始撰写 PRD'
-            },
-            homework: {
-                title: '完善异常分支',
-                description: '为你设计的功能补充至少 5 条异常处理逻辑。'
-            }
-        }
-      },
-      { id: 'c105', title: '需求池管理：优先级排序法则', duration: '1h', lessons: 4, completed: 0, linkTo: SkillCategory.PROJECT_MANAGEMENT },
-      { id: 'c106', title: '敏捷开发入门：Scrum 与 Sprint', duration: '2h', lessons: 8, completed: 0, linkTo: SkillCategory.PROJECT_MANAGEMENT },
-    ]
-  },
-  {
-    id: 'l2',
-    level: 'LEVEL 2',
-    title: '产品经理 (PM)',
-    description: '独立负责模块，数据驱动决策与协作。适合1-3岁进阶成长。',
-    color: 'purple',
-    price: 299,
-    courses: [
-      { 
-        id: 'c201', title: 'SQL 数据实战：Select 到窗口函数', duration: '5h', lessons: 15, completed: 5, linkTo: SkillCategory.DATA_ANALYSIS,
-        details: {
-            objectives: ['脱离 Excel，直接从数据库取数', '掌握 GROUP BY 和 JOIN 核心语法', '理解数据库表结构关系'],
-            theory: {
-                summary: '在数据驱动的时代，SQL 是 PM 的第二语言。不依赖分析师，自己动手查数，能极大提升决策效率。',
-                keyPoints: ['SELECT...FROM...WHERE 基础结构', '聚合函数：COUNT, SUM, AVG', '多表关联：LEFT JOIN 的陷阱'],
-                content: 'SQL 本质上是集合运算。\n\n`SELECT user_id, COUNT(order_id) FROM orders GROUP BY user_id`\n\n这句话的含义是：把订单表按用户分组，算出每个用户下了多少单。\n\n我们还将学习窗口函数 `RANK() OVER()`，这在计算排名和留存时非常有用。'
-            },
-            practice: {
-                title: 'SQL 模拟练习',
-                description: '前往数据分析页面的“硬技能”模块，运行几段 SQL 代码，查询销售数据。',
-                actionLabel: '前往 SQL 实验室'
-            },
-            homework: {
-                title: '编写查询语句',
-                description: '写一段 SQL，查询上个月消费金额前 10 名的用户的 ID 和 总金额。'
-            }
-        }
-      },
-      { id: 'c202', title: '指标体系搭建：DAU, LTV 与 留存', duration: '3h', lessons: 10, completed: 0, linkTo: SkillCategory.DATA_ANALYSIS }, 
-      { id: 'c203', title: 'A/B 测试设计：统计学与置信度', duration: '2h', lessons: 6, completed: 0, linkTo: SkillCategory.DATA_ANALYSIS },
-      { id: 'c204', title: '高保真原型与设计规范 (Design System)', duration: '4h', lessons: 12, completed: 0, linkTo: SkillCategory.PROTOTYPING },
-      { id: 'c205', title: '用户调研：深访技巧与问卷设计', duration: '2.5h', lessons: 8, completed: 0, linkTo: SkillCategory.REQUIREMENTS },
-      { id: 'c206', title: '体验设计：尼尔森十大可用性原则', duration: '2h', lessons: 8, completed: 0, linkTo: SkillCategory.PROTOTYPING },
-    ]
-  },
-  {
-    id: 'l3',
-    level: 'LEVEL 3',
-    title: '高级产品经理',
-    description: '商业洞察、战略规划与团队管理。适合3年以上骨干深造。',
-    color: 'orange',
-    price: 599,
-    courses: [
-      { id: 'c301', title: '商业模式画布 (BMC) 与 BRD 撰写', duration: '3h', lessons: 9, completed: 0, linkTo: SkillCategory.REQUIREMENTS },
-      { id: 'c302', title: '增长黑客：AARRR 模型与增长循环', duration: '3h', lessons: 10, completed: 0, linkTo: SkillCategory.DATA_ANALYSIS },
-      { id: 'c303', title: 'SaaS 产品架构与 API 接口设计', duration: '5h', lessons: 18, completed: 0, linkTo: SkillCategory.PROTOTYPING },
-      { id: 'c304', title: '复杂项目管理：风险控制与甘特图', duration: '3h', lessons: 8, completed: 0, linkTo: SkillCategory.PROJECT_MANAGEMENT },
-      { id: 'c305', title: 'B 端产品设计：权限模型 (RBAC)', duration: '4h', lessons: 10, completed: 0, linkTo: SkillCategory.PROTOTYPING },
-      { id: 'c306', title: '向上管理与跨部门协作艺术', duration: '1.5h', lessons: 4, completed: 0, linkTo: SkillCategory.INTERVIEW },
-    ]
-  },
-  {
-    id: 'l4',
-    level: 'LEVEL 4',
-    title: '产品总监 (Director)',
-    description: '运筹帷幄，定战略，带将才，懂资本。适合向高管跃迁的精英。',
-    color: 'slate',
-    price: 1299,
-    courses: [
-      { id: 'c401', title: '产品战略规划：DOT 战略地图', duration: '5h', lessons: 12, completed: 0, linkTo: SkillCategory.INTERVIEW },
-      { id: 'c402', title: '组织架构设计与中台战略', duration: '4h', lessons: 8, completed: 0, linkTo: SkillCategory.PROTOTYPING },
-      { id: 'c403', title: '财务报表分析：P&L, EBITDA 与 现金流', duration: '3h', lessons: 8, completed: 0, linkTo: SkillCategory.DATA_ANALYSIS },
-      { id: 'c404', title: '商业并购 (M&A) 与投后管理', duration: '3h', lessons: 6, completed: 0, linkTo: SkillCategory.REQUIREMENTS },
-      { id: 'c405', title: '人才梯队建设：选育用留', duration: '3h', lessons: 8, completed: 0, linkTo: SkillCategory.INTERVIEW },
-      { id: 'c406', title: 'CPO 级实战答辩与能力评估', duration: '1h', lessons: 1, completed: 0, linkTo: SkillCategory.EXAM },
-    ]
-  }
-];
-
-// --- Custom Styles for Specific Animations ---
 const AnimationStyles = () => (
     <style>{`
       @keyframes sway {
@@ -249,8 +65,6 @@ const AnimationStyles = () => (
       }
     `}</style>
 );
-
-// --- Evolved Graphics (Top Right) ---
 
 const StarBadge = () => (
   <g className="origin-center animate-breathe-hover" style={{ transformOrigin: '100px 100px', transform: 'scale(0.5)' }}>
@@ -391,6 +205,193 @@ const Level4Graphic = ({ isLocked, hasCertificate }: { isLocked: boolean; hasCer
     </g>
   </svg>
 );
+
+// --- 3. Data Generators ---
+
+const generateDefaultDetails = (course: Course): CourseDetail => ({
+  objectives: [
+    `掌握 ${course.title} 的核心概念`,
+    '理解在实际产品工作中的应用场景',
+    '能够独立完成基础案例操作'
+  ],
+  theory: {
+    summary: '本节课我们将深入探讨该主题的理论基础，结合大厂案例进行解析。',
+    keyPoints: ['核心定义与背景', '标准工作流程 (SOP)', '常见误区与避坑指南'],
+    content: `在现代产品管理中，${course.title} 是不可或缺的一环。\n\n我们需要关注用户价值与商业价值的平衡。通过系统化的方法论，我们可以减少决策的不确定性。\n\n重点在于：\n1. 明确目标用户\n2. 分析核心痛点\n3. 制定可落地的解决方案`
+  },
+  practice: {
+    title: '实战演练',
+    description: '理论结合实践。请前往对应的工作台，利用我们在课程中学到的方法论，完成一次完整的操作。',
+    actionLabel: course.linkTo ? '前往工作台实操' : '开始模拟练习'
+  },
+  homework: {
+    title: '课后思考',
+    description: '结合你负责过的或正在使用的产品，分析其在该维度的表现，并撰写一份 500 字的分析报告。'
+  }
+});
+
+const COURSE_DATA: CourseLevel[] = [
+  {
+    id: 'l1',
+    level: 'LEVEL 1',
+    title: '产品助理 (APM)',
+    description: '构建核心产品思维，掌握基础执行能力。适合0-1岁新人入门。',
+    color: 'blue',
+    price: 0,
+    courses: [
+      { 
+        id: 'c101', title: '产品经理职业全景与思维模型', duration: '45min', lessons: 3, completed: 3,
+        details: {
+            objectives: ['理解产品经理的定义与职责边界', '掌握“同理心”与“第一性原理”思维', '了解互联网产品的全生命周期'],
+            theory: {
+                summary: '产品经理 (PM) 是产品的 CEO，负责产品的生老病死。但更准确地说，PM 是资源的协调者和价值的创造者。',
+                keyPoints: ['PM 的能力模型：冰山模型', '产品生命周期：引入、成长、成熟、衰退', '核心思维：用户思维、数据思维、迭代思维'],
+                content: '在这个模块中，我们将打破你对 PM 的刻板印象。PM 不仅仅是画图和写文档的人，更是商业目标的实现者。\n\n我们将重点讨论“双钻模型 (Double Diamond)”：\n1. 发现问题 (Discover)\n2. 定义问题 (Define)\n3. 构思方案 (Develop)\n4. 交付验证 (Deliver)'
+            },
+            practice: {
+                title: '自我评估',
+                description: '使用 SWOT 分析法，分析自己转行/从事产品经理的优势与劣势。',
+                actionLabel: '查看职业地图'
+            },
+            homework: {
+                title: '拆解一款 App',
+                description: '选择你最常用的 App，用思维导图画出它的核心功能架构。'
+            }
+        }
+      }, 
+      { 
+        id: 'c102', title: '竞品分析：SWOT 与五层法实战', duration: '1.5h', lessons: 5, completed: 5, linkTo: SkillCategory.REQUIREMENTS,
+        details: {
+            objectives: ['学会选择正确的竞品（直接/间接/潜在）', '掌握用户体验要素（五层法）分析框架', '能够输出一份高质量的竞品分析报告'],
+            theory: {
+                summary: '知己知彼，百战不殆。竞品分析不是简单的截图对比，而是通过表象看本质，洞察对手的战略意图。',
+                keyPoints: ['竞品分级：核心竞品 vs 重要竞品', '分析维度：战略层、范围层、结构层、框架层、表现层', '信息收集渠道：财报、AppStore 评论、行业报告'],
+                content: '五层法分析实战：\n\n**1. 战略层**：他们的用户是谁？帮用户解决了什么问题？\n**2. 范围层**：提供了哪些功能和内容？\n**3. 结构层**：交互逻辑和信息架构是怎样的？\n**4. 框架层**：页面布局和按钮位置。\n**5. 表现层**：视觉风格和配色。\n\n切记：不要为了分析而分析，结论必须服务于我们的产品迭代。'
+            },
+            practice: {
+                title: '生成竞品分析报告',
+                description: '前往需求模块，使用 AI 辅助功能，针对“抖音 vs 快手”生成一份竞品分析草稿。',
+                actionLabel: '前往需求工作台'
+            },
+            homework: {
+                title: '竞品功能对比表',
+                description: '选取 3 个同类产品，对比其“注册登录”流程的优劣，并输出 Excel 对比表。'
+            }
+        }
+      },
+      { id: 'c103', title: '流程图绘制：泳道图与状态机', duration: '2h', lessons: 6, completed: 2, linkTo: SkillCategory.PROTOTYPING,
+        details: {
+            objectives: ['掌握业务流程图（Flowchart）的绘制规范', '理解泳道图（Swimlane）在多角色协作中的作用', '学会使用状态机图描述复杂状态流转'],
+            theory: {
+                summary: '流程图是产品逻辑的骨架。一张清晰的流程图胜过千言万语的需求描述。',
+                keyPoints: ['流程图符号规范：开始/结束、操作、判断、文档', '泳道图：明确“谁”在“什么时候”做了“什么”', 'MECE 原则：流程分支不重不漏'],
+                content: '业务流程图绘制三部曲：\n1. **梳理主干**：先画出 Happy Path（最顺利的路径）。\n2. **补充枝节**：在每个判断节点（菱形）增加“否”的分支（异常流程）。\n3. **明确角色**：使用泳道区分用户、前端、后端、第三方支付等角色。'
+            },
+            practice: {
+                title: '绘制下单流程',
+                description: '前往原型设计模块，查看“业务流程图”指南，并尝试手绘一个“电商下单-支付-发货”的泳道图。',
+                actionLabel: '查看绘制指南'
+            },
+            homework: {
+                title: '优化现有流程',
+                description: '找出一个你觉得体验糟糕的 App 功能，画出它的现有流程图，并画出优化后的流程图。'
+            }
+        }
+      },
+      { 
+        id: 'c104', title: 'PRD 撰写：从用户故事到异常逻辑', duration: '4h', lessons: 12, completed: 0, linkTo: SkillCategory.REQUIREMENTS,
+        details: {
+            objectives: ['理解标准 PRD 的文档结构', '掌握 User Story 的标准句式', '学会编写无歧义的功能验收标准 (AC)'],
+            theory: {
+                summary: 'PRD 是产品经理交付给开发和测试的“法律文书”。清晰、严谨是第一要求。',
+                keyPoints: ['PRD 核心要素：变更记录、背景、流程、功能详情、埋点', '异常流程：断网、报错、空状态', '版本管理：如何避免需求变更带来的混乱'],
+                content: '一份优秀的 PRD 应该像说明书一样好读。\n\n**User Story 模板**：\nAs a <Role>, I want to <Action>, so that <Value>.\n\n**异常逻辑检查清单**：\n- 数据加载失败怎么办？\n- 输入字符超长怎么办？\n- 权限不足时显示什么？\n- 并发操作如何处理？'
+            },
+            practice: {
+                title: '撰写我的第一个 PRD',
+                description: '前往需求模块，使用分步引导工具，完成“用户登录功能”的 PRD 撰写，重点补充异常逻辑。',
+                actionLabel: '开始撰写 PRD'
+            },
+            homework: {
+                title: '完善异常分支',
+                description: '为你设计的功能补充至少 5 条异常处理逻辑。'
+            }
+        }
+      },
+      { id: 'c105', title: '需求池管理：优先级排序法则', duration: '1h', lessons: 4, completed: 0, linkTo: SkillCategory.PROJECT_MANAGEMENT },
+      { id: 'c106', title: '敏捷开发入门：Scrum 与 Sprint', duration: '2h', lessons: 8, completed: 0, linkTo: SkillCategory.PROJECT_MANAGEMENT },
+    ]
+  },
+  {
+    id: 'l2',
+    level: 'LEVEL 2',
+    title: '产品经理 (PM)',
+    description: '独立负责模块，数据驱动决策与协作。适合1-3岁进阶成长。',
+    color: 'purple',
+    price: 299,
+    courses: [
+      { 
+        id: 'c201', title: 'SQL 数据实战：Select 到窗口函数', duration: '5h', lessons: 15, completed: 5, linkTo: SkillCategory.DATA_ANALYSIS,
+        details: {
+            objectives: ['脱离 Excel，直接从数据库取数', '掌握 GROUP BY 和 JOIN 核心语法', '理解数据库表结构关系'],
+            theory: {
+                summary: '在数据驱动的时代，SQL 是 PM 的第二语言。不依赖分析师，自己动手查数，能极大提升决策效率。',
+                keyPoints: ['SELECT...FROM...WHERE 基础结构', '聚合函数：COUNT, SUM, AVG', '多表关联：LEFT JOIN 的陷阱'],
+                content: 'SQL 本质上是集合运算。\n\n`SELECT user_id, COUNT(order_id) FROM orders GROUP BY user_id`\n\n这句话的含义是：把订单表按用户分组，算出每个用户下了多少单。\n\n我们还将学习窗口函数 `RANK() OVER()`，这在计算排名和留存时非常有用。'
+            },
+            practice: {
+                title: 'SQL 模拟练习',
+                description: '前往数据分析页面的“硬技能”模块，运行几段 SQL 代码，查询销售数据。',
+                actionLabel: '前往 SQL 实验室'
+            },
+            homework: {
+                title: '编写查询语句',
+                description: '写一段 SQL，查询上个月消费金额前 10 名的用户的 ID 和 总金额。'
+            }
+        }
+      },
+      { id: 'c202', title: '指标体系搭建：DAU, LTV 与 留存', duration: '3h', lessons: 10, completed: 0, linkTo: SkillCategory.DATA_ANALYSIS }, 
+      { id: 'c203', title: 'A/B 测试设计：统计学与置信度', duration: '2h', lessons: 6, completed: 0, linkTo: SkillCategory.DATA_ANALYSIS },
+      { id: 'c204', title: '高保真原型与设计规范 (Design System)', duration: '4h', lessons: 12, completed: 0, linkTo: SkillCategory.PROTOTYPING },
+      { id: 'c205', title: '用户调研：深访技巧与问卷设计', duration: '2.5h', lessons: 8, completed: 0, linkTo: SkillCategory.REQUIREMENTS },
+      { id: 'c206', title: '体验设计：尼尔森十大可用性原则', duration: '2h', lessons: 8, completed: 0, linkTo: SkillCategory.PROTOTYPING },
+    ]
+  },
+  {
+    id: 'l3',
+    level: 'LEVEL 3',
+    title: '高级产品经理',
+    description: '商业洞察、战略规划与团队管理。适合3年以上骨干深造。',
+    color: 'orange',
+    price: 599,
+    courses: [
+      { id: 'c301', title: '商业模式画布 (BMC) 与 BRD 撰写', duration: '3h', lessons: 9, completed: 0, linkTo: SkillCategory.REQUIREMENTS },
+      { id: 'c302', title: '增长黑客：AARRR 模型与增长循环', duration: '3h', lessons: 10, completed: 0, linkTo: SkillCategory.DATA_ANALYSIS },
+      { id: 'c303', title: 'SaaS 产品架构与 API 接口设计', duration: '5h', lessons: 18, completed: 0, linkTo: SkillCategory.PROTOTYPING },
+      { id: 'c304', title: '复杂项目管理：风险控制与甘特图', duration: '3h', lessons: 8, completed: 0, linkTo: SkillCategory.PROJECT_MANAGEMENT },
+      { id: 'c305', title: 'B 端产品设计：权限模型 (RBAC)', duration: '4h', lessons: 10, completed: 0, linkTo: SkillCategory.PROTOTYPING },
+      { id: 'c306', title: '向上管理与跨部门协作艺术', duration: '1.5h', lessons: 4, completed: 0, linkTo: SkillCategory.INTERVIEW },
+    ]
+  },
+  {
+    id: 'l4',
+    level: 'LEVEL 4',
+    title: '产品总监 (Director)',
+    description: '运筹帷幄，定战略，带将才，懂资本。适合向高管跃迁的精英。',
+    color: 'slate',
+    price: 1299,
+    courses: [
+      { id: 'c401', title: '产品战略规划：DOT 战略地图', duration: '5h', lessons: 12, completed: 0, linkTo: SkillCategory.INTERVIEW },
+      { id: 'c402', title: '组织架构设计与中台战略', duration: '4h', lessons: 8, completed: 0, linkTo: SkillCategory.PROTOTYPING },
+      { id: 'c403', title: '财务报表分析：P&L, EBITDA 与 现金流', duration: '3h', lessons: 8, completed: 0, linkTo: SkillCategory.DATA_ANALYSIS },
+      { id: 'c404', title: '商业并购 (M&A) 与投后管理', duration: '3h', lessons: 6, completed: 0, linkTo: SkillCategory.REQUIREMENTS },
+      { id: 'c405', title: '人才梯队建设：选育用留', duration: '3h', lessons: 8, completed: 0, linkTo: SkillCategory.INTERVIEW },
+      { id: 'c406', title: 'CPO 级实战答辩与能力评估', duration: '1h', lessons: 1, completed: 0, linkTo: SkillCategory.EXAM },
+    ]
+  }
+];
+
+// --- 4. Main Components ---
 
 interface CourseDetailViewProps {
   course: Course;
